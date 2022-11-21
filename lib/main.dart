@@ -32,14 +32,11 @@ import 'Screens/Booking Status/booking_status.dart';
     DeviceOrientation.portraitDown
   ]);
    runApp(const MyApp());
- // const home = Auth();
- // runApp(const MyApp(home: home));
 }
 
+
 class MyApp extends StatefulWidget {
-  //final Auth home;
   const MyApp({Key? key,
-  //  required this.home
   }) : super(key: key);
 
   @override
@@ -56,6 +53,7 @@ class _MyAppState extends State<MyApp> {
     checkAuth();
   }
 
+  /// Check user logged in or not
   void checkAuth() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
@@ -75,45 +73,11 @@ class _MyAppState extends State<MyApp> {
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
           title: 'Shagun Resort Review',
-          // initialRoute: "/",
           onGenerateRoute: RouteGenerator.generateRoute,
           home: isLoggedIn ? const BookingStatus() : const LoginScreen()
-          //widget.home,
         )
     );
   }
 }
-
-// class Auth extends StatefulWidget {
-//   const Auth({Key? key}) : super(key: key);
-//
-//   @override
-//   State<Auth> createState() => _AuthState();
-// }
-//
-// class _AuthState extends State<Auth> {
-//   bool isLoggedIn = false;
-//
-//   @override
-//   void initState() {
-//     // TODO: implement initState
-//     super.initState();
-//     checkAuth();
-//   }
-//
-//   void checkAuth() async {
-//     SharedPreferences prefs = await SharedPreferences.getInstance();
-//     setState(() {
-//       isLoggedIn = prefs.getBool("isLoggedIn") ?? false;
-//     });
-//   }
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return isLoggedIn
-//         ? const BookingStatus()
-//         : const LoginScreen();
-//   }
-// }
 
 

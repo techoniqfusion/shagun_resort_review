@@ -66,6 +66,7 @@ class _BookingStatusState extends State<BookingStatus> {
           /// Logout button
           GestureDetector(
             onTap: (){
+              /// Logout PopUp
               popUp(context: context, title: "Are you sure want to logout?",
               actions: [
                 TextButton(
