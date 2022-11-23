@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:shagun_resort_review/API/resource.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shagun_resort_review/Service/secure_storage.dart';
 import '../API Response Models/client_data_model.dart';
 import 'base_api_model.dart';
 import 'network_calls.dart';
@@ -74,10 +74,9 @@ class AppApi{
 
   Future <ClientDetail> getClientData() async{
     try{
-      final prefs = await SharedPreferences.getInstance();
-     // await prefs.setBool('isLoggedIn', true);
-      final userId = prefs.getString('userId');
-      final userToken = prefs.getString('userToken');
+      var storage = SecureStorage();
+      final userId = await storage.readSecureData('userId');
+      final userToken = await storage.readSecureData('userToken');
       final queryParameters = {
         'token': userToken,
         'user_id': userId,

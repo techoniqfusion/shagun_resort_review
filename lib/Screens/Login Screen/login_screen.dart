@@ -84,6 +84,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       borderRadius: BorderRadius.circular(10)),
                   ),
                   const SizedBox(height: 5,),
+
+                  /// Login View
                   Form(
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     key: formKey,

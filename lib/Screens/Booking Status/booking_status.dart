@@ -7,6 +7,7 @@ import 'package:shagun_resort_review/Component/custom_buttom.dart';
 import 'package:shagun_resort_review/Component/pop_up.dart';
 import 'package:shagun_resort_review/Provider/authenticate_provider.dart';
 import 'package:shagun_resort_review/Screens/Check%20Food%20Quality/check_food_quality.dart';
+import 'package:shagun_resort_review/Service/secure_storage.dart';
 import 'package:shagun_resort_review/utils/app_font.dart';
 import 'package:shagun_resort_review/utils/app_images.dart';
 import 'package:shagun_resort_review/utils/app_route.dart';
@@ -26,6 +27,7 @@ class BookingStatus extends StatefulWidget {
 class _BookingStatusState extends State<BookingStatus> {
 
   final apiCall = AppApi();
+  final storage = SecureStorage();
   final controller = ScrollController();
  // bool reachBottom = false;
 
@@ -77,7 +79,8 @@ class _BookingStatusState extends State<BookingStatus> {
                 ),
                 TextButton(
                   onPressed: () {
-                    provider.logOutUser();
+                    // provider.logOutUser();
+                    storage.deleteSecureData('userToken');
                     provider.emailController.clear();
                     provider.passwordController.clear();
                     Navigator.pushNamedAndRemoveUntil(context, AppScreen.login, (route) => false);
@@ -173,7 +176,7 @@ class _BookingStatusState extends State<BookingStatus> {
                            builder: (context, tempDataState) {
                              controller.addListener(() {
                                if(controller.position.pixels == controller.position.maxScrollExtent){
-                                 print(tempData.length);
+                                 // print(tempData.length);
                                  // if(mounted) {
                                    Future.delayed(const Duration(seconds: 1),(){
                                          tempDataState(() {

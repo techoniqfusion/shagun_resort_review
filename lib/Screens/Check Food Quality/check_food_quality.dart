@@ -4,10 +4,10 @@ import 'package:shagun_resort_review/API/call_api.dart';
 import 'package:shagun_resort_review/Component/custom_buttom.dart';
 import 'package:shagun_resort_review/Component/textform_field.dart';
 import 'package:shagun_resort_review/Provider/authenticate_provider.dart';
+import 'package:shagun_resort_review/Service/secure_storage.dart';
 import 'package:shagun_resort_review/utils/app_font.dart';
 import 'package:shagun_resort_review/utils/app_route.dart';
 import 'package:shagun_resort_review/utils/app_size.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../../API Response Models/client_data_model.dart';
 import '../../Component/pop_up.dart';
 import '../../utils/app_color.dart';
@@ -66,6 +66,8 @@ class _CheckFoodQualityState extends State<CheckFoodQuality>
         ),
       ),
       body: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+
+        /// Customer Details heading
         Padding(
           padding: EdgeInsets.only(top: 20.0, left: 20, bottom: 15),
           child: Text(
@@ -73,7 +75,8 @@ class _CheckFoodQualityState extends State<CheckFoodQuality>
             style: TextStyle(color: AppColor.black, fontSize: 14),
           ),
         ),
-        // for (var item = 0; item < widget.clientDetail.data!.length; item++)
+
+        /// Customer Booking Details Card
         Container(
           margin: EdgeInsets.only(left: 20, right: 20, bottom: 15),
           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
@@ -141,6 +144,8 @@ class _CheckFoodQualityState extends State<CheckFoodQuality>
             ],
           ),
         ),
+
+        /// Review heading
         Padding(
           padding: const EdgeInsets.only(top: 10, left: 20, bottom: 15),
           child: Text(
@@ -148,6 +153,8 @@ class _CheckFoodQualityState extends State<CheckFoodQuality>
             style: TextStyle(color: AppColor.black, fontSize: 14),
           ),
         ),
+
+        /// Feedback Page Slider
         SizedBox(
           height: AppSize.getHeight(context) * .30,
           child: PageView.builder(
@@ -231,6 +238,7 @@ class _CheckFoodQualityState extends State<CheckFoodQuality>
                         ? Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
+                              /// back button
                               Visibility(
                                 visible: index != 0,
                                 child: Padding(
@@ -250,6 +258,7 @@ class _CheckFoodQualityState extends State<CheckFoodQuality>
                                     )),
                               ),
 
+                              /// next button
                               Visibility(
                                 visible: widget.clientData.reviewData![index].skip == false &&
                                 widget.clientData.reviewData![index].isSelected,
@@ -269,48 +278,8 @@ class _CheckFoodQualityState extends State<CheckFoodQuality>
                                       },
                                     )),
                               ),
-                              // Visibility(
-                              //   visible: index != widget.clientData.reviewData!.length - 1,
-                              //   child: Padding(
-                              //     padding: const EdgeInsets.only(right: 8),
-                              //     child: CustomButton(
-                              //       backgroundColor: MaterialStateProperty.all<Color>(AppColor.green),
-                              //       onPressed: () {
-                              //         if (widget.clientData.reviewData![index]
-                              //                 .skip ??
-                              //             false) {
-                              //           pageController.nextPage(
-                              //               duration:
-                              //                   const Duration(milliseconds: 300),
-                              //               curve: Curves.easeIn);
-                              //         }
-                              //         // print("skip value is ${widget.reviewDataList![index].skip} and other is ${widget.reviewDataList![index].isSelected}");
-                              //         else if (widget.clientData.reviewData![index]
-                              //                 .isSelected ==
-                              //             false) {
-                              //           popUp(
-                              //             context: context,
-                              //             title: "Please give review",
-                              //             actions: <Widget>[
-                              //               TextButton(
-                              //                 onPressed: () {
-                              //                   Navigator.of(context).pop();
-                              //                 },
-                              //                 child: const Text("okay"),
-                              //               ),
-                              //             ],
-                              //           );
-                              //         } else {
-                              //           pageController.nextPage(
-                              //               duration:
-                              //                   const Duration(milliseconds: 300),
-                              //               curve: Curves.easeIn);
-                              //         }
-                              //       },
-                              //       buttonText: 'next',
-                              //     ),
-                              //   ),
-                              // ),
+
+                              /// next/skip button
                               Visibility(
                                 visible:
                                     widget.clientData.reviewData![index].skip ??
@@ -334,6 +303,7 @@ class _CheckFoodQualityState extends State<CheckFoodQuality>
                         : Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
+                              /// back button
                               Visibility(
                                 visible: index != 0,
                                 child: Padding(
@@ -353,6 +323,7 @@ class _CheckFoodQualityState extends State<CheckFoodQuality>
                                     )),
                               ),
 
+                              /// submit Button
                               CustomButton(
                                   width: 50,
                                   backgroundColor:
@@ -379,10 +350,10 @@ class _CheckFoodQualityState extends State<CheckFoodQuality>
   }
 
    Future callSubmitReviewApi() async{
-    final prefs = await SharedPreferences.getInstance();
+    var storage = SecureStorage();
     Map<String, dynamic> requestBody = <String, dynamic>{};
     requestBody['booking_id'] = widget.clientDetail.bookingId;
-    requestBody['token'] = prefs.getString('userToken');
+    requestBody['token'] = await storage.readSecureData('userToken');
     // print("user token ${requestBody['token']}");
     for (var item = 0; item < widget.clientData.reviewData!.length; item++) {
       if(widget.clientData.reviewData?[item].optionVal != null) {

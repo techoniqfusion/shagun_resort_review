@@ -2,14 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:shagun_resort_review/API/call_api.dart';
 import 'package:shagun_resort_review/API/resource.dart';
 import 'package:shagun_resort_review/Component/pop_up.dart';
+import 'package:shagun_resort_review/Service/secure_storage.dart';
 import 'package:shagun_resort_review/utils/app_route.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
 
 class AuthProvider extends ChangeNotifier {
   bool isButtonEnabled = false;
-  bool isChecked = false;
   bool loginLoader = false;
   final api = AppApi();
+  final secureStorage = SecureStorage();
 
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
@@ -40,7 +41,6 @@ class AuthProvider extends ChangeNotifier {
 
   /// Login Functionality
   Future login(BuildContext context) async{
-
     Map<String, dynamic> body = {
       "email" : emailController.text,
       "password" : passwordController.text
@@ -52,11 +52,10 @@ class AuthProvider extends ChangeNotifier {
             updateLoader(true); // show loader
            Resource resData = response as Resource;
            if(response.status == true){
+
              updateLoader(true);
-               final prefs = await SharedPreferences.getInstance();
-               await prefs.setBool('isLoggedIn', true);
-               await prefs.setString('userId', resData.data['user_id']);
-               await prefs.setString('userToken', resData.data['token']);
+               secureStorage.writeSecureData('userId', resData.data['user_id']);
+               secureStorage.writeSecureData('userToken', resData.data['token']);
                Navigator.popAndPushNamed(context, AppScreen.bookingStatus);
                updateLoader(false);
                emailController.clear();    // clear email controller
@@ -81,12 +80,6 @@ class AuthProvider extends ChangeNotifier {
       print("Login API error $error");
       rethrow;
     }
-  }
-
-  /// Logout User
-  Future logOutUser()async{
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    pref.clear();
   }
 
   /// Show/Hide loader functionality
