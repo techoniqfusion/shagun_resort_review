@@ -6,7 +6,7 @@ Future popUp({required BuildContext context, required String title,
   return showDialog(
     context: context,
     builder: (context) => AlertDialog(
-      title: Center(child: Text(title)),
+      title: Text(title,textAlign: TextAlign.center,),
       actions: actions
       // <Widget>[
       //   TextButton(

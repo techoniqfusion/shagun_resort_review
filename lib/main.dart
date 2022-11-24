@@ -48,7 +48,6 @@ class _MyAppState extends State<MyApp> {
   var userToken;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
       storage.readSecureData('userToken').then((value){
       userToken = value;

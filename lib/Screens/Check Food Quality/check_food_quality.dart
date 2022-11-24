@@ -350,7 +350,7 @@ class _CheckFoodQualityState extends State<CheckFoodQuality>
   }
 
    Future callSubmitReviewApi() async{
-    var storage = SecureStorage();
+    final storage = SecureStorage();
     Map<String, dynamic> requestBody = <String, dynamic>{};
     requestBody['booking_id'] = widget.clientDetail.bookingId;
     requestBody['token'] = await storage.readSecureData('userToken');

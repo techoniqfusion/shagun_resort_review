@@ -44,10 +44,6 @@ class AppApi{
   Future commonGetMethod(String url,
       {bool isSendToken = false}) async {
     Map<String, String> header = {};
-    if (isSendToken) {
-      // var user = HiveConfig.getUserHive();
-      // header.putIfAbsent("api_token", () => "${user?.token}");
-    }
     header.putIfAbsent("content-type", () => "application/json");
     var response = await baseClientApi.get(url, header);
     return response;
@@ -74,7 +70,7 @@ class AppApi{
 
   Future <ClientDetail> getClientData() async{
     try{
-      var storage = SecureStorage();
+      final storage = SecureStorage();
       final userId = await storage.readSecureData('userId');
       final userToken = await storage.readSecureData('userToken');
       final queryParameters = {

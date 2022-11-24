@@ -52,10 +52,9 @@ class AuthProvider extends ChangeNotifier {
             updateLoader(true); // show loader
            Resource resData = response as Resource;
            if(response.status == true){
-
              updateLoader(true);
-               secureStorage.writeSecureData('userId', resData.data['user_id']);
-               secureStorage.writeSecureData('userToken', resData.data['token']);
+              await secureStorage.writeSecureData('userId', resData.data['user_id']);    // insert data in local storage
+              await secureStorage.writeSecureData('userToken', resData.data['token']);  // insert data in local storage
                Navigator.popAndPushNamed(context, AppScreen.bookingStatus);
                updateLoader(false);
                emailController.clear();    // clear email controller
