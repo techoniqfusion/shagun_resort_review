@@ -4,16 +4,16 @@ class SecureStorage{
 
   final storage = FlutterSecureStorage();
 
-  final androidOptions = const AndroidOptions(encryptedSharedPreferences: true);
+  // final androidOptions = const AndroidOptions(encryptedSharedPreferences: true);
 
-  final iphoneOptions = IOSOptions(accessibility: KeychainAccessibility.first_unlock);
+  // final iphoneOptions = IOSOptions(accessibility: KeychainAccessibility.first_unlock);
 
   /// used to insert data in an encrypted format in local storage
   Future writeSecureData(String key, String value) async{
     try{
       var writeData = await storage.write(key: key, value: value,
-          iOptions: iphoneOptions,
-          aOptions: androidOptions);
+        //  iOptions: iphoneOptions, aOptions: androidOptions
+      );
       return writeData;
     }
     catch(exception){
@@ -27,7 +27,7 @@ class SecureStorage{
   Future readSecureData(String key) async{
     try{
       var readData = await storage.read(key: key,
-          aOptions: androidOptions, iOptions: iphoneOptions
+        //  aOptions: androidOptions, iOptions: iphoneOptions
       );
       return readData;
     }
@@ -42,7 +42,7 @@ class SecureStorage{
   Future deleteSecureData(String key) async{
     try{
       var deleteData =  await storage.delete(key: key,
-          aOptions: androidOptions, iOptions: iphoneOptions
+         // aOptions: androidOptions, iOptions: iphoneOptions
       );
       return deleteData;
     }

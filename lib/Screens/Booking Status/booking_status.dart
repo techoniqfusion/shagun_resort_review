@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:percent_indicator/percent_indicator.dart';
+import 'package:provider/provider.dart';
 import 'package:shagun_resort_review/Component/custom_buttom.dart';
 import 'package:shagun_resort_review/Component/pop_up.dart';
 import 'package:shagun_resort_review/Provider/authenticate_provider.dart';
@@ -46,9 +47,8 @@ class _BookingStatusState extends State<BookingStatus> {
   @override
   Widget build(BuildContext context) {
     List<Data> tempData = [];
-    AuthProvider provider = AuthProvider();
+    final provider = Provider.of<AuthProvider>(context,listen: false);
     Future getRefreshData() async{
-      await apiCall.getClientData();
       setState(() {});
     }
     return Scaffold(
@@ -60,7 +60,6 @@ class _BookingStatusState extends State<BookingStatus> {
         actions: [
           TextButton(
             onPressed: () {
-              apiCall.getClientData();
               setState(() {});
             },
             child: const Icon(Icons.refresh,color: AppColor.white,),
@@ -79,8 +78,7 @@ class _BookingStatusState extends State<BookingStatus> {
                 ),
                 TextButton(
                   onPressed: () {
-                    // provider.logOutUser();
-                    storage.deleteSecureData('userToken');
+                    storage.deleteSecureData('userToken'); // logout user
                     provider.emailController.clear();
                     provider.passwordController.clear();
                     Navigator.pushNamedAndRemoveUntil(context, AppScreen.login, (route) => false);
@@ -94,11 +92,9 @@ class _BookingStatusState extends State<BookingStatus> {
               SvgPicture.asset(AppImages.signOut),
               const Padding(
                 padding: EdgeInsets.only(left: 5.0,right: 15),
-                child: Center(
-                  child: Text("Logout",style: TextStyle(color: AppColor.white, fontFamily: AppFont.poppinsRegular,
-                      fontSize: 12
-                  ),),
-                ),
+                child: Text("Logout",style: TextStyle(color: AppColor.white, fontFamily: AppFont.poppinsRegular,
+                    fontSize: 12
+                ),),
               )
             ],),
           ),
